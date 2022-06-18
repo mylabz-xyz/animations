@@ -1,0 +1,30 @@
+{
+  "name": "animations",
+  "version": "1.0.0",
+  "description": "Animations used by all mylabz.xyz's websites",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mylabz-xyz/animations.git"
+  },
+  "author": "Boucham Amine",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mylabz-xyz/animations/issues"
+  },
+  "homepage": "https://github.com/mylabz-xyz/animations#readme",
+  "dependencies": {
+    "@types/three": "^0.141.0",
+    "three": "^0.141.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^9.3.0",
+    "typescript": "^4.7.4",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-livereload-plugin": "^3.0.2"
+  }
+}
