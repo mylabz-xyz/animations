@@ -1,10 +1,16 @@
-import {FluidShadows} from './backgrounds'
-
+import { FluidShadows } from './backgrounds';
 
 var viewport: any = document.querySelector('#viewport') as HTMLElement;
 
+const animations = {
+  fluidShadows: () => {
+    const item = new FluidShadows();
+    item.init(viewport);
+    item.run();
+    return item;
+  }
+};
 
-const animation =new FluidShadows()
+const animation = animations.fluidShadows;
 
-animation.init(viewport)
-animation.run()
+animation();
