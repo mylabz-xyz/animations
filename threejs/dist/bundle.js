@@ -10,13 +10,63 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./backgrounds/fluid-shadows/fragment.glsl":
+/*!*************************************************!*\
+  !*** ./backgrounds/fluid-shadows/fragment.glsl ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (\"#ifdef GL_ES\\nprecision highp float;\\n#endif\\n\\n#define PI2 6.28318530718\\n#define MAX_ITER 5\\n\\nuniform float uTime;\\nuniform vec2 uResolution;\\nuniform float spectrum;\\n\\n\\nvoid mainImage( out vec4 fragColor, in vec2 fragCoord )\\n{\\n    float uTime = uTime * .1;\\n    vec2 uv = fragCoord.xy / uResolution.xy;\\n\\n    vec2 p = mod(uv * PI2, PI2) - 100.0  ;\\n    vec2 i = vec2(p);\\n    float c = 0.5;\\n    float inten =  .0094;\\n\\n    for (int n = 0; n < MAX_ITER; n++) {\\n        float t = uTime * (1.5 - (2.2 / float(n + 122)));\\n        i = p + vec2(cos(t - i.x) + sin(t + i.y), sin(t - i.y) + cos(t + i.x));\\n        c += 1.0 / length(vec2(p.x / (sin(i.x + t) / inten + spectrum), p.y / (cos(i.y + t) / inten)));\\n    }\\n\\n    c /= float(MAX_ITER);\\n    c = 1.10-pow(c, 1.26);\\n    vec3 colour = vec3(0.098+pow(abs(c), 0.2), 0.098+pow(abs(c), 0.2), .098+pow(abs(c), 0.2));\\n\\n    fragColor = vec4(colour, 1.3);\\n}\\n\\n\\nvoid main( void ) {\\n    mainImage(gl_FragColor, gl_FragCoord.xy);}\");\n\n//# sourceURL=webpack:///./backgrounds/fluid-shadows/fragment.glsl?");
+
+/***/ }),
+
+/***/ "./backgrounds/fluid-shadows/vertex.glsl":
+/*!***********************************************!*\
+  !*** ./backgrounds/fluid-shadows/vertex.glsl ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (\"precision mediump float;\\nvarying vec2 vUv;\\n\\nvoid main() {\\nvUv = uv;\\ngl_Position = projectionMatrix * modelViewMatrix *    vec4(position, 1.0);\\n}\");\n\n//# sourceURL=webpack:///./backgrounds/fluid-shadows/vertex.glsl?");
+
+/***/ }),
+
+/***/ "./backgrounds/fluid-shadows/fluid-shadows.ts":
+/*!****************************************************!*\
+  !*** ./backgrounds/fluid-shadows/fluid-shadows.ts ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.FluidShadows = void 0;\nvar THREE = __webpack_require__(/*! three */ \"../node_modules/three/build/three.cjs\");\n//@ts-ignore\nvar fragment_glsl_1 = __webpack_require__(/*! ./fragment.glsl */ \"./backgrounds/fluid-shadows/fragment.glsl\");\n//@ts-ignore\nvar vertex_glsl_1 = __webpack_require__(/*! ./vertex.glsl */ \"./backgrounds/fluid-shadows/vertex.glsl\");\nvar FluidShadows = /** @class */ (function () {\n    function FluidShadows() {\n    }\n    FluidShadows.prototype.init = function (canvas) {\n        this.scene = new THREE.Scene();\n        this.scene.background = new THREE.Color(0xffffff);\n        this.light = new THREE.SpotLight(0xffffff, 1);\n        var fov = 45;\n        var aspect = window.innerWidth / window.innerHeight;\n        var near = 1;\n        var far = 100;\n        this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);\n        this.geometry = new THREE.PlaneBufferGeometry(30, 10);\n        this.material = new THREE.ShaderMaterial({\n            vertexShader: vertex_glsl_1.default,\n            fragmentShader: fragment_glsl_1.default,\n            uniforms: {\n                uTime: { value: 0.0 },\n                uResolution: { value: { x: window.innerWidth, y: window.innerHeight } }\n            }\n        });\n        this.mesh = new THREE.Mesh(this.geometry, this.material);\n        this.renderer = new THREE.WebGLRenderer({\n            canvas: canvas\n        });\n        this.renderer.setClearColor(0xffffff, 1);\n        this.renderer.setPixelRatio(window.devicePixelRatio);\n        this.renderer.setSize(window.innerWidth, window.innerHeight);\n        this.scene.add(this.camera);\n        this.scene.add(this.mesh);\n        this.scene.add(this.light);\n        this.mesh.position.set(0, 0, 0);\n        this.camera.position.set(0, 0, 10);\n        this.light.position.set(0, 0, 10);\n        this.light.lookAt(this.mesh.position);\n        this.camera.lookAt(this.mesh.position);\n        this.clock = new THREE.Clock();\n        this.addEvents();\n    };\n    FluidShadows.prototype.run = function () {\n        window.requestAnimationFrame(this.run.bind(this));\n        this.material.uniforms.uTime.value = this.clock.getElapsedTime();\n        this.renderer.render(this.scene, this.camera);\n    };\n    FluidShadows.prototype.addEvents = function () {\n        window.addEventListener('resize', this.onResize.bind(this), false);\n    };\n    FluidShadows.prototype.onResize = function () {\n        this.material.uniforms.uResolution = {\n            value: { x: window.innerWidth, y: window.innerHeight }\n        };\n        this.camera.aspect = window.innerWidth / window.innerHeight;\n        this.camera.updateProjectionMatrix();\n        this.renderer.setSize(window.innerWidth, window.innerHeight);\n    };\n    return FluidShadows;\n}());\nexports.FluidShadows = FluidShadows;\n\n\n//# sourceURL=webpack:///./backgrounds/fluid-shadows/fluid-shadows.ts?");
+
+/***/ }),
+
+/***/ "./backgrounds/fluid-shadows/index.ts":
+/*!********************************************!*\
+  !*** ./backgrounds/fluid-shadows/index.ts ***!
+  \********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+eval("\nvar __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    var desc = Object.getOwnPropertyDescriptor(m, k);\n    if (!desc || (\"get\" in desc ? !m.__esModule : desc.writable || desc.configurable)) {\n      desc = { enumerable: true, get: function() { return m[k]; } };\n    }\n    Object.defineProperty(o, k2, desc);\n}) : (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    o[k2] = m[k];\n}));\nvar __exportStar = (this && this.__exportStar) || function(m, exports) {\n    for (var p in m) if (p !== \"default\" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\n__exportStar(__webpack_require__(/*! ./fluid-shadows */ \"./backgrounds/fluid-shadows/fluid-shadows.ts\"), exports);\n\n\n//# sourceURL=webpack:///./backgrounds/fluid-shadows/index.ts?");
+
+/***/ }),
+
+/***/ "./backgrounds/index.ts":
+/*!******************************!*\
+  !*** ./backgrounds/index.ts ***!
+  \******************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+eval("\nvar __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    var desc = Object.getOwnPropertyDescriptor(m, k);\n    if (!desc || (\"get\" in desc ? !m.__esModule : desc.writable || desc.configurable)) {\n      desc = { enumerable: true, get: function() { return m[k]; } };\n    }\n    Object.defineProperty(o, k2, desc);\n}) : (function(o, m, k, k2) {\n    if (k2 === undefined) k2 = k;\n    o[k2] = m[k];\n}));\nvar __exportStar = (this && this.__exportStar) || function(m, exports) {\n    for (var p in m) if (p !== \"default\" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\n__exportStar(__webpack_require__(/*! ./fluid-shadows */ \"./backgrounds/fluid-shadows/index.ts\"), exports);\n\n\n//# sourceURL=webpack:///./backgrounds/index.ts?");
+
+/***/ }),
+
 /***/ "./index.ts":
 /*!******************!*\
   !*** ./index.ts ***!
   \******************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar THREE = __webpack_require__(/*! three */ \"../node_modules/three/build/three.cjs\");\nvar scene = new THREE.Scene();\nvar camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);\nvar renderer = new THREE.WebGLRenderer();\nvar geometry = new THREE.BoxGeometry(1, 1, 1);\nvar material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });\nvar cube = new THREE.Mesh(geometry, material);\nscene.add(cube);\ncamera.position.z = 5;\nvar viewport = document.querySelector('#viewport');\nrenderer.setSize(viewport.clientWidth, viewport.clientHeight);\nviewport.appendChild(renderer.domElement);\nwindow.addEventListener('resize', function () {\n    var viewport = document.querySelector('#viewport');\n    camera.aspect = viewport.clientWidth / viewport.clientHeight;\n    camera.updateProjectionMatrix();\n    renderer.setSize(viewport.clientWidth, viewport.clientHeight);\n    console.log('resize');\n});\nvar animate = function () {\n    requestAnimationFrame(animate);\n    cube.rotation.x += 0.01;\n    cube.rotation.y += 0.01;\n    renderer.render(scene, camera);\n};\nanimate();\n\n\n//# sourceURL=webpack:///./index.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar backgrounds_1 = __webpack_require__(/*! ./backgrounds */ \"./backgrounds/index.ts\");\nvar viewport = document.querySelector('#viewport');\nvar animation = new backgrounds_1.FluidShadows();\nanimation.init(viewport);\nanimation.run();\n\n\n//# sourceURL=webpack:///./index.ts?");
 
 /***/ }),
 
@@ -50,11 +100,40 @@ eval("/**\n * @license\n * Copyright 2010-2022 Three.js Authors\n * SPDX-License
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
 /******/ 	
 /************************************************************************/
 /******/ 	
