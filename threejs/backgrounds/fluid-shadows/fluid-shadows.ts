@@ -1,5 +1,7 @@
 import * as THREE from 'three';
+import { CubeTexture, IcosahedronBufferGeometry, Material, Mesh, MeshBasicMaterial } from 'three';
 import { FluidShadowsOptions } from '.';
+import { Ship } from '../../objects/vehicules/space/spaceships/Ship';
 import { hexToVec3 } from '../../utils';
 //@ts-ignore
 import fragment from './fragment.glsl';
@@ -61,7 +63,7 @@ export class FluidShadows {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
     this.scene.add(this.camera);
-    this.scene.add(this.mesh);
+     this.scene.add(this.mesh);
     this.scene.add(this.light);
     this.mesh.position.set(0, 0, 0);
     this.camera.position.set(0, 0, 10);
@@ -73,6 +75,8 @@ export class FluidShadows {
     this.clock = new THREE.Clock();
 
     this.addEvents();
+
+    // this.testShip();
   }
 
   public run() {
@@ -98,5 +102,19 @@ export class FluidShadows {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  private async testShip() {
+    const ship = await new Ship();
+
+    this.scene.add(ship.mesh.scene);
+
+    const geometry = new IcosahedronBufferGeometry(50, 60);
+
+    const material = new MeshBasicMaterial({ color: 'red' });
+
+    const mesh = new Mesh(geometry, material);
+
+    this.scene.add(mesh)
   }
 }

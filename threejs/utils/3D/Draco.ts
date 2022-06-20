@@ -2,7 +2,7 @@ import { LoadingManager, Material, Mesh, Object3D } from 'three';
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
-export class AirPlane {
+export class DracoLoader {
   public mesh!: GLTF;
   private loader: GLTFLoader;
   private loadingManager: LoadingManager;
@@ -38,8 +38,9 @@ export class AirPlane {
   }
 
   private defaultInit(gltf: GLTF) {
+    console.log(gltf)
     gltf.scene.scale.set(1.5, 1.5, 1.5);
-    gltf.scene.position.set(0, 100, 0);
+    gltf.scene.position.set(0, 0, 0);
     gltf.scene.traverse((child: Object3D<Event>) => {
       if (child.isObject3D) {
         child.receiveShadow = true;
