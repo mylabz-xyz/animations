@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { FluidShadowsOptions } from '.';
 import { hexToVec3 } from '../../utils';
 //@ts-ignore
 import fragment from './fragment.glsl';
@@ -22,11 +23,13 @@ export class FluidShadows {
     shadowSpectrum: 0.0,
     speed: 0.1
   };
-
-  public init(canvas: HTMLCanvasElement, options?: FluidShadows['options']) {
+  constructor(options?: FluidShadowsOptions) {
     if (options) {
       this.options = { ...this.options, ...options };
     }
+  }
+
+  public init(canvas: HTMLCanvasElement) {
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(this.options.backgroundColor);
     this.light = new THREE.SpotLight(this.options.backgroundColor, 1);
@@ -76,6 +79,12 @@ export class FluidShadows {
     window.requestAnimationFrame(this.run.bind(this));
     this.material.uniforms.uTime.value = this.clock.getElapsedTime();
     this.renderer.render(this.scene, this.camera);
+  }
+
+  public setOptions(options?: FluidShadowsOptions) {
+    if (options) {
+      this.options = { ...this.options, ...options };
+    }
   }
 
   private addEvents(): void {
