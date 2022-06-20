@@ -18,6 +18,7 @@
   "homepage": "https://github.com/mylabz-xyz/animations#readme",
   "dependencies": {
     "@types/three": "^0.141.0",
+    "glslify": "^7.1.1",
     "three": "^0.141.0"
   },
   "devDependencies": {
