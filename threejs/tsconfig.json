@@ -1,9 +1,9 @@
 {
-	"compilerOptions": {
-		"outDir": "dist",
-		"noImplicitAny": true,
-		"target": "es5",
-		"allowJs": true,
-		"experimentalDecorators":true
-	}
+  "compilerOptions": {
+    "outDir": "dist",
+    "noImplicitAny": true,
+    "target": "es5",
+    "allowJs": true,
+    "experimentalDecorators": true
+  }
 }
