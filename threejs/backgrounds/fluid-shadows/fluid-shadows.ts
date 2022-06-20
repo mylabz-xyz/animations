@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { CubeTexture, IcosahedronBufferGeometry, Material, Mesh, MeshBasicMaterial } from 'three';
+import { IcosahedronBufferGeometry, Mesh, MeshBasicMaterial } from 'three';
 import { FluidShadowsOptions } from '.';
 import { Ship } from '../../objects/vehicules/space/spaceships/Ship';
 import { hexToVec3 } from '../../utils';
