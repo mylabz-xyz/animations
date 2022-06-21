@@ -1,4 +1,3 @@
-import { Mesh } from 'three';
 import { DracoLoader } from '../../../../utils/3D/Draco';
 
 export class Ship {
