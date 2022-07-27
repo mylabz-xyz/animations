@@ -27,7 +27,7 @@ export class PlasmaBall {
 
   position: any = [];
 
-  constructor(targetPosition: Vector3, vertex: string, frag: string, settings: PlasmaBallSettings) {
+  constructor(targetPosition: Vector3, vertex: string, frag: string, settings?: PlasmaBallSettings) {
     if (settings) {
       this.settings = { ...this.settings, ...settings };
     }

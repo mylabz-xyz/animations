@@ -4,7 +4,8 @@
   "description": "Animations used by all mylabz.xyz's websites",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve":"webpack serve"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   "dependencies": {
     "@types/three": "^0.141.0",
     "glslify": "^7.1.1",
+    "rxjs": "^7.5.5",
     "three": "^0.141.0"
   },
   "devDependencies": {
