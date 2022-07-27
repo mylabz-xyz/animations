@@ -1,6 +1,6 @@
 export * from './app'
 export interface MusicAviatorOptions {
-    backgroundColor?: string;
+    backgroundColor?: THREE.Color;
     speed?: number;
   }
   
